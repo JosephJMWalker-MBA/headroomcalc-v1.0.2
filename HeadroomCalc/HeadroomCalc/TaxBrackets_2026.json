@@ -1,0 +1,54 @@
+[
+  {
+    "year": 2026,
+    "status": "Single",
+    "brackets": [
+      { "lower": 0, "upper": 12400, "rate": 0.10 },
+      { "lower": 12400, "upper": 50400, "rate": 0.12 },
+      { "lower": 50400, "upper": 105700, "rate": 0.22 },
+      { "lower": 105700, "upper": 201775, "rate": 0.24 },
+      { "lower": 201775, "upper": 256225, "rate": 0.32 },
+      { "lower": 256225, "upper": 640600, "rate": 0.35 },
+      { "lower": 640600, "upper": null, "rate": 0.37 }
+    ]
+  },
+  {
+    "year": 2026,
+    "status": "Married Filing Jointly",
+    "brackets": [
+      { "lower": 0, "upper": 24800, "rate": 0.10 },
+      { "lower": 24800, "upper": 100800, "rate": 0.12 },
+      { "lower": 100800, "upper": 211400, "rate": 0.22 },
+      { "lower": 211400, "upper": 403550, "rate": 0.24 },
+      { "lower": 403550, "upper": 512450, "rate": 0.32 },
+      { "lower": 512450, "upper": 768700, "rate": 0.35 },
+      { "lower": 768700, "upper": null, "rate": 0.37 }
+    ]
+  },
+  {
+    "year": 2026,
+    "status": "Married Filing Separately",
+    "brackets": [
+      { "lower": 0, "upper": 12400, "rate": 0.10 },
+      { "lower": 12400, "upper": 50400, "rate": 0.12 },
+      { "lower": 50400, "upper": 105700, "rate": 0.22 },
+      { "lower": 105700, "upper": 201775, "rate": 0.24 },
+      { "lower": 201775, "upper": 256225, "rate": 0.32 },
+      { "lower": 256225, "upper": 384350, "rate": 0.35 },
+      { "lower": 384350, "upper": null, "rate": 0.37 }
+    ]
+  },
+  {
+    "year": 2026,
+    "status": "Head of Household",
+    "brackets": [
+      { "lower": 0, "upper": 17700, "rate": 0.10 },
+      { "lower": 17700, "upper": 67450, "rate": 0.12 },
+      { "lower": 67450, "upper": 105700, "rate": 0.22 },
+      { "lower": 105700, "upper": 201750, "rate": 0.24 },
+      { "lower": 201750, "upper": 256200, "rate": 0.32 },
+      { "lower": 256200, "upper": 640600, "rate": 0.35 },
+      { "lower": 640600, "upper": null, "rate": 0.37 }
+    ]
+  }
+]
