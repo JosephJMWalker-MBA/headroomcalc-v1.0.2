@@ -24,7 +24,7 @@ struct HowToUseView: View {
         VStack(alignment: .leading, spacing: 6) {
             Text("HeadroomCalc")
                 .font(.largeTitle.bold())
-            Text("Plan income without breaking into the next tax bracket")
+            Text("Plan Roth conversions and avoid IRMAA/NIIT surprises")
                 .foregroundStyle(.secondary)
         }
     }
@@ -33,7 +33,7 @@ struct HowToUseView: View {
         VStack(alignment: .leading, spacing: 8) {
             Text("What this does")
                 .font(.headline)
-            Text("Track your household income for a tax year and see how much headroom you have before the next bracket. Then try adding potential items—contract work, option exercises, RSUs—to see the impact before you commit.")
+            Text("Track your household income, visualize how close you are to the next bracket, and flag IRMAA, NIIT, and QBI thresholds before they trip. Use **Simulate** to model Roth conversions, contract work, or equity sales side-by-side with your baseline.")
         }
     }
 
@@ -46,8 +46,9 @@ struct HowToUseView: View {
                 HowToRow(number: 2, title: "Set your filing profile", detail: "Tap **Settings** (gear) to choose Filing Status and Standard Deduction.")
                 HowToRow(number: 3, title: "Add base income", detail: "Add your main job (**W‑2 Wages**) and your spouse’s job if filing jointly. Include other steady items like **Social Security**, **Pension**, **Dividends**, and **Interest**.")
                 HowToRow(number: 4, title: "Explore what‑ifs", detail: "Try **Incentive/Nonqualified Stock Options**, **Restricted Stock Units**, **1099/Contractor** income, or bonuses. Option entries show **Bargain Element / Share** and **Max Shares Within Headroom** to help you size an exercise.")
-                HowToRow(number: 5, title: "Watch the summary", detail: "The header shows your **Taxable Income**, **Current Bracket**, and **Headroom to Next Bracket** in dollars.")
-                HowToRow(number: 6, title: "Export a PDF", detail: "Use **Export** to generate a one‑page report of the year for sharing or records.")
+                HowToRow(number: 5, title: "Simulate scenarios", detail: "Tap **Simulate** on the toolbar to compare additional ordinary income or capital gains against your baseline. Watch the headroom bar and threshold chips update live.")
+                HowToRow(number: 6, title: "Watch the summary", detail: "The header shows your **Taxable Income**, **Current Bracket**, **Headroom Bar**, and risk chips for IRMAA, NIIT, and QBI.")
+                HowToRow(number: 7, title: "Export a PDF", detail: "Use **Export** to generate a one‑page report with the thresholds used for audit-friendly documentation.")
             }
         }
     }
@@ -112,6 +113,7 @@ struct HowToUseView: View {
                 .font(.headline)
             Label("Use one ledger per tax year. Clone forward each January.", systemImage: "calendar")
             Label("If a year’s tax table JSON is missing, you’ll see a prompt in the header.", systemImage: "exclamationmark.triangle")
+            Label("Simulate Roth conversions or gain harvests before committing — adjustments stay sandboxed in the sheet.", systemImage: "slider.horizontal.3")
             Label("You can delete entries (swipe in the list) and re‑add to iterate.", systemImage: "trash")
         }
     }

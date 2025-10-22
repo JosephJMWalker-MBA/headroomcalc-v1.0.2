@@ -9,6 +9,7 @@ import Foundation
 struct HeadroomSummaryView: View {
     @Bindable var ledger: YearLedger
     @State private var errorText: String?
+    @State private var thresholdInsights: [ThresholdInsight] = []
 
     var body: some View {
         Group {
@@ -34,6 +35,9 @@ struct HeadroomSummaryView: View {
                 .font(.title3.weight(.semibold))
                 .lineLimit(1)
 
+            ThresholdChipsView(bracketRate: result?.bracketRate,
+                                insights: thresholdInsights)
+
             if let profile = ledger.profile {
                 LabeledContent("Filing Status", value: profile.status.rawValue)
                 LabeledContent("Standard Deduction", value: currency(profile.standardDeduction))
@@ -47,6 +51,11 @@ struct HeadroomSummaryView: View {
             LabeledContent("Total Income", value: currency(ledger.totalIncome))
 
             if let result {
+                HeadroomBar(result: result,
+                            standardDeduction: ledger.profile?.standardDeduction,
+                            thresholds: thresholdInsights)
+                    .padding(.vertical, 4)
+
                 LabeledContent("Taxable Income", value: currency(result.taxableIncome))
                 LabeledContent("Current Bracket", value: percent(result.bracketRate))
                 LabeledContent("Bracket Range", value: rangeText(result))
@@ -86,15 +95,19 @@ struct HeadroomSummaryView: View {
     private func recalc() {
         do {
             result = try HeadroomEngine.compute(for: ledger)
+            thresholdInsights = ThresholdInsightService.shared.insights(for: ledger)
             errorText = nil
         } catch HeadroomError.tablesUnavailable {
             result = nil
+            thresholdInsights = []
             errorText = "Add TaxBrackets_\(ledger.year.formatted(IntegerFormatStyle<Int>.number.grouping(.never))).json to the app bundle."
         } catch HeadroomError.missingProfile {
             result = nil
+            thresholdInsights = []
             errorText = "Create a Filing Profile for this year (status + deduction)."
         } catch {
             result = nil
+            thresholdInsights = []
             errorText = "Unexpected error: \(error.localizedDescription)"
         }
     }

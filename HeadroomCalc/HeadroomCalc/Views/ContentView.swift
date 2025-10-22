@@ -24,11 +24,13 @@ struct ContentView: View {
         case settings
         case share(URL)
         case howTo
+        case scenario
         var id: String {
             switch self {
             case .settings: return "settings"
             case .share(let url): return "share:\(url.absoluteString)"
             case .howTo: return "howto"
+            case .scenario: return "scenario"
             }
         }
     }
@@ -64,6 +66,15 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
+                        ensureProfile(for: selectedLedger)
+                        DispatchQueue.main.async { activeSheet = .scenario }
+                    } label: {
+                        Label("Simulate", systemImage: "slider.horizontal.3")
+                    }
+                    .help("Compare scenarios with additional income")
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
                         do {
                             let url = try ReportExporter.exportPDF(for: selectedLedger)
                             exportedURL = url
@@ -94,6 +105,8 @@ struct ContentView: View {
                     ReportShareView(url: url)
                 case .howTo:
                     NavigationStack { HowToUseView() }
+                case .scenario:
+                    ScenarioCompareView(ledger: selectedLedger)
                 }
             }
             .alert("Export Error", isPresented: Binding(
