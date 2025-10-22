@@ -12,6 +12,17 @@ struct HeadroomResult {
     let dollarsToNextBracket: Double? // nil if top bracket
 }
 
+struct ScenarioInputs: Equatable {
+    var additionalOrdinaryIncome: Double = 0
+    var additionalLongTermCapitalGains: Double = 0
+
+    var totalAdjustment: Double {
+        additionalOrdinaryIncome + additionalLongTermCapitalGains
+    }
+
+    static let zero = ScenarioInputs()
+}
+
 enum HeadroomError: Error {
     case missingProfile
     case tablesUnavailable
@@ -19,10 +30,15 @@ enum HeadroomError: Error {
 
 enum HeadroomEngine {
     static func compute(for ledger: YearLedger) throws -> HeadroomResult {
+        try compute(for: ledger, applying: .zero)
+    }
+
+    static func compute(for ledger: YearLedger, applying adjustments: ScenarioInputs) throws -> HeadroomResult {
         guard let profile = ledger.profile else { throw HeadroomError.missingProfile }
 
         // v1 taxable income: totalIncome - standard deduction (not below zero)
-        let taxable = max(0, ledger.totalIncome - profile.standardDeduction)
+        let adjustedTotal = ledger.totalIncome + adjustments.totalAdjustment
+        let taxable = max(0, adjustedTotal - profile.standardDeduction)
 
         let table: TaxTable
         do {

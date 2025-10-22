@@ -59,11 +59,18 @@ private struct ReportView: View {
         do { return try HeadroomEngine.compute(for: ledger) } catch { return nil }
     }
 
+    private var thresholdDataset: TaxThresholds? {
+        guard let profile = ledger.profile else { return nil }
+        return ThresholdInsightService.shared.thresholds(for: ledger.year, status: profile.status)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             header
             Divider()
             summarySection
+            Divider()
+            thresholdsSection
             Divider()
             entriesSection
             disclaimerFooter
@@ -137,6 +144,48 @@ private struct ReportView: View {
             } else {
                 Text("Tax table not available for this year.")
                     .foregroundStyle(.secondary)
+            }
+        }
+    }
+
+    private var thresholdsSection: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("Thresholds Used")
+                .font(.headline)
+
+            if let data = thresholdDataset {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("IRMAA Tiers")
+                        .font(.subheadline.weight(.semibold))
+                    ForEach(Array(zip(data.irmaaTiers.indices, data.irmaaTiers)), id: \.0) { index, tier in
+                        HStack {
+                            Text("Tier \(index + 1)")
+                                .frame(width: 80, alignment: .leading)
+                            Text(currency(tier.limit))
+                                .monospacedDigit()
+                                .frame(alignment: .leading)
+                        }
+                    }
+                }
+
+                HStack(alignment: .firstTextBaseline, spacing: 24) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("NIIT Threshold")
+                            .font(.subheadline.weight(.semibold))
+                        Text(currency(data.niit.limit))
+                            .monospacedDigit()
+                    }
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("QBI Phase-in")
+                            .font(.subheadline.weight(.semibold))
+                        Text(currency(data.qbi.limit))
+                            .monospacedDigit()
+                    }
+                }
+            } else {
+                Text("Set a filing profile to include IRMAA, NIIT, and QBI thresholds.")
+                    .foregroundStyle(.secondary)
+                    .font(.subheadline)
             }
         }
     }
